@@ -70,9 +70,9 @@ def main():
     utterance_cleaner = CLEANER_FUNC[args.dataset_name]
     asr_tsv_path = ""
 
-    for task in TASKS:
+    for split in TRAIN_SPLITS[args.dataset_name]:
+        for task in TASKS:
 
-        for split in TRAIN_SPLITS[args.dataset_name]:
 
             # find the file for this (task, split) pair
             match = False
@@ -91,7 +91,7 @@ def main():
             tsv_path = tsv_root / file_name
             df_split = load_df_from_tsv(tsv_path)
 
-            print(f"Running filtering script for {split} split of {args.dataset_name} from file {tsv_path}")
+            print(f"Running filtering script for {split} split of {args.dataset_name} from file {tsv_path}, task {task}")
             df_split_filtered = filter(df_split, asr_tsv_path, task, utterance_cleaner,
                 args.asr_batch_size, args.asr_wer_threshold)
 
